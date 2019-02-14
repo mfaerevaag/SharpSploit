@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Exceptions\InjectionException.cs" />
     <Compile Include="Exceptions\PayloadException.cs" />
+    <Compile Include="InjectionMethod.cs" />
     <Compile Include="Injection.cs" />
+    <Compile Include="Methods\CreateRemoteThreadMethod.cs" />
     <Compile Include="NativeMethod.cs" />
     <Compile Include="Payload.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
