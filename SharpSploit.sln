@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSploit", "SharpSploit\SharpSploit.csproj", "{88287CCF-4976-4253-8956-51C502F1E400}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{93734774-6121-4C68-8B3B-290AC1774ADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{13513A37-4728-4ECC-A5DE-676810F8864D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLLInjection", "DLLInjection\DLLInjection.csproj", "{EE555C86-528C-4998-A9BE-62EAE8237D13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8FD5578-0011-476F-B4F1-7C53D3E1E273}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLLInjectionTest", "Tests\DLLInjectionTest\DLLInjectionTest.csproj", "{5431D301-4802-4344-92D8-0EBE66652EE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyVictim", "Tests\DummyVictim\DummyVictim.csproj", "{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +21,33 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{88287CCF-4976-4253-8956-51C502F1E400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88287CCF-4976-4253-8956-51C502F1E400}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88287CCF-4976-4253-8956-51C502F1E400}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88287CCF-4976-4253-8956-51C502F1E400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93734774-6121-4C68-8B3B-290AC1774ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93734774-6121-4C68-8B3B-290AC1774ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93734774-6121-4C68-8B3B-290AC1774ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93734774-6121-4C68-8B3B-290AC1774ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13513A37-4728-4ECC-A5DE-676810F8864D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13513A37-4728-4ECC-A5DE-676810F8864D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13513A37-4728-4ECC-A5DE-676810F8864D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13513A37-4728-4ECC-A5DE-676810F8864D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE555C86-528C-4998-A9BE-62EAE8237D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE555C86-528C-4998-A9BE-62EAE8237D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE555C86-528C-4998-A9BE-62EAE8237D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE555C86-528C-4998-A9BE-62EAE8237D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5431D301-4802-4344-92D8-0EBE66652EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5431D301-4802-4344-92D8-0EBE66652EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5431D301-4802-4344-92D8-0EBE66652EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5431D301-4802-4344-92D8-0EBE66652EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5431D301-4802-4344-92D8-0EBE66652EE5} = {C8FD5578-0011-476F-B4F1-7C53D3E1E273}
+		{606B1119-6F7C-4A9D-AD21-7067B9A1AE1C} = {C8FD5578-0011-476F-B4F1-7C53D3E1E273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6F194B1-D053-4471-9836-5C2714DB1E5C}
