@@ -43,20 +43,27 @@ namespace SharpSploit.Console
 
             // generate payload
             Payload payload = Payload.Generate(@"
-                char message[] = ""DLL_INJECTED\r\n"";
-                DWORD tmp;
-                WriteFile(hStdout, message, sizeof(message), &tmp, NULL);
+                MessageBox(NULL, _T(""Your process belongs to me""), _T(""SharpSploit""), 0);
+                break;
             ");
 
             // compile payload to dll
-            FileInfo payloadDll = payload.Compile();
+            FileInfo payloadDll = null;
+            try
+            {
+                 payloadDll = payload.Compile();
+            }
+            catch (PayloadException ex)
+            {
+                Logger.Error(ex.Message);
+                return;
+            }
 
             // start victim process
             Process victim = Process.Start(new ProcessStartInfo
             {
                 CreateNoWindow = false,
-                FileName = @"C:\Users\m\Dev\SharpSploit-DLLInjection\Debug\DLLInjector.Victim.exe",
-                //FileName = typeof(Tests.Asdf.Program).Assembly.Location,
+                FileName = typeof(Tests.DummyVictim.Program).Assembly.Location,
 
                 UseShellExecute = false,
                 RedirectStandardInput = true,
@@ -66,30 +73,17 @@ namespace SharpSploit.Console
 
             Injection.LoadLib(victim.Id, payloadDll);
 
-            bool dllInjected = false;
-
-            victim.OutputDataReceived += (sender, e) =>
-            {
-                if (e.Data != null && e.Data.Contains("DLL_INJECTED"))
-                {
-                    dllInjected = true;
-                }
-            };
-            victim.BeginOutputReadLine();
-
+            // wait
             var start = DateTime.Now;
-            while (!dllInjected)
+            while (true)
             {
-                // sleep introduces memory barrier
                 Thread.Sleep(100);
-
                 if (DateTime.Now.Subtract(start).TotalSeconds > 10)
-                {
-                    Logger.Error("No answer from victim");
                     break;
-                }
             }
 
+            victim.Kill();
+            victim.Dispose();
             payloadDll.Delete();
         }
     }

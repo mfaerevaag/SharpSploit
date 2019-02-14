@@ -1,4 +1,6 @@
+#include <tchar.h>
 #include <Windows.h>
+#pragma comment (lib, "User32.lib")
 
 static volatile int exitThreads = 0;
 static HANDLE hThread = NULL;
