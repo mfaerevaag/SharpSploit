@@ -73,7 +73,7 @@ namespace SharpSploit.Tests.DLLInjectionTest
         [TestMethod]
         public void Should_Inject_DLL_Using_Create_Remote_Thread_Method()
         {
-            Injection.Factory(Injection.Method.CREATE_REMOTE_THREAD).Inject(_victim.Id, _payloadDll);
+            Injector.Factory(InjectorType.CREATE_REMOTE_THREAD).Inject(_victim, _payloadDll);
 
             TestHelpers.AssertDLLInjection(_victim, timeoutSeconds: TIMEOUT);
         }

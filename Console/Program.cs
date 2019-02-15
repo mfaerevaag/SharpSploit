@@ -72,7 +72,7 @@ namespace SharpSploit.Console
             });
 
 
-            Injection.Factory(Injection.Method.CREATE_REMOTE_THREAD).Inject(victim.Id, payloadDll);
+            Injector.Factory(InjectorType.CREATE_REMOTE_THREAD).Inject(victim, payloadDll);
 
             // wait
             var start = DateTime.Now;
